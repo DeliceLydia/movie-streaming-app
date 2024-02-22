@@ -41,7 +41,7 @@ const Signin = ({ navigation }) => {
       />
       <Text style={{ color: "#ae9a53", left: 130 }}>Forgot Password?</Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Register")}
+        onPress={() => navigation.navigate("Dashboard")}
         style={styles.get}
       >
         <Text

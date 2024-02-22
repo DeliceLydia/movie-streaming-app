@@ -58,7 +58,7 @@ const Signup = ({ navigation }) => {
       <Text style={{ color: "#ae9a53", }}>privacy policy</Text>
       </Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Signup")}
+        onPress={() => navigation.navigate("Signin")}
         style={styles.get}
       >
         <Text

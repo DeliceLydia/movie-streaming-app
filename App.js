@@ -6,13 +6,14 @@ import Start from "./components/Start";
 import Welcome from "./components/Welcome";
 import Signin from "./components/signin";
 import Signup from "./components/signup";
+import Dashboard from "./components/Dashboard";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Signin">
+      <Stack.Navigator initialRouteName="Dashboard">
         <Stack.Screen
           name="Home"
           component={Home}
@@ -59,6 +60,11 @@ const App = () => {
               />
             ),
           }}
+        />
+         <Stack.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
