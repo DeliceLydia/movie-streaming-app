@@ -54,16 +54,17 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     justifyContent: "center",
+    opacity: 0.7
   },
   text: {
-    color: "white",
+    color: "#f4f4f4",
     fontSize: 24,
     fontWeight: "bold",
     marginTop: 400,
     paddingLeft: 20,
   },
   info: {
-    color: "white",
+    color: "#d7d5d3",
     fontSize: 16,
     paddingLeft: 20,
     marginTop: 10,

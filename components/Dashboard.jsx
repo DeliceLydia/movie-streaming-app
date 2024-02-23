@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Types  from './types';
 import Trending from "./Trending";
 import New from "./New";
@@ -9,11 +9,13 @@ import MadeForYou from "./Made";
 import Feather from "react-native-vector-icons/Feather";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
-const Dashboard = () => {
+const Dashboard = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.nav}>
+      <TouchableOpacity onPress={() => navigation.navigate("Home")}>
         <Image source={require("../assets/muvi.png")} style={styles.image} />
+        </TouchableOpacity>
         <View style={styles.icons}>
           <Feather
             style={styles.iconStyle}

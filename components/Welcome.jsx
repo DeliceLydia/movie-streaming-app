@@ -17,7 +17,7 @@ const Welcome = ({navigation}) => {
           Free movie streaming all your needs {"\n"} everytime and everywhere
         </Text>
       </View>
-      <View style={styles.get}>
+      <TouchableOpacity onPress={() => navigation.navigate("Signin")} style={styles.get}>
         <Text
           style={{
             color: "#000",
@@ -33,7 +33,7 @@ const Welcome = ({navigation}) => {
         >
           Watch Movie
         </Text>
-      </View>
+        </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("Signin")}>
         <Text style={styles.signin}>Sign In</Text>
       </TouchableOpacity>

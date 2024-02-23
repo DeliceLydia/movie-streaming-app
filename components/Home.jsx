@@ -4,7 +4,7 @@ const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.navigate("start")}>
-        <Image source={require("../assets/muvi.png")} style={styles.image} />
+        <Image source={require("../assets/lg.png")} style={styles.image} />
       </TouchableOpacity>
     </View>
   );

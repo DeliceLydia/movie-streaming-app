@@ -1,13 +1,57 @@
-import { View, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
+import React, { useState } from "react";
+import { View, Image, StyleSheet, Text, Pressable } from "react-native";
 import { TextInput } from "react-native-paper";
 import { Icon } from "react-native-elements";
 
 const Signin = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const validateForm = () => {
+    let valid = true;
+
+    const isValidEmail = (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    };
+
+    // Validate email
+    if (!email.trim()) {
+      setEmailError("Email is required");
+      valid = false;
+    } else if (!isValidEmail(email)) {
+      setEmailError("Invalid email format");
+      valid = false;
+    } else {
+      setEmailError("");
+    }
+    // Validate password
+    if (!password.trim()) {
+      setPasswordError("Password is required");
+      valid = false;
+    } else {
+      setPasswordError("");
+    }
+    return valid;
+  };
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      navigation.navigate("Dashboard");
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.img}>
-        <Image source={require("../assets/lg.png")} style={styles.image} resizeMode="cover"/>
-      </View>
+      <Pressable onPress={() => navigation.navigate("Home")} style={styles.img}>
+      <Image
+          source={require("../assets/lg.png")}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      </Pressable>
       <View style={styles.textContainer}>
         <Text style={styles.text}>
           Please Login to enjoy more benefits and we
@@ -15,10 +59,16 @@ const Signin = ({ navigation }) => {
         <Text style={styles.text}>won't let You go</Text>
       </View>
       <TextInput
+        theme={{
+          colors: {
+            primary: "#FCD130",
+          },
+        }}
         style={styles.input}
         mode="flat"
         label="Email Address"
         placeholder="email"
+        textColor="#868889"
         right={
           <TextInput.Icon
             icon="email-outline"
@@ -26,10 +76,19 @@ const Signin = ({ navigation }) => {
             backgroundColor="#26282c"
           />
         }
+        onChangeText={setEmail}
+        error={emailError}
       />
+      {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
       <TextInput
+       theme={{
+        colors: {
+          primary: "#FCD130",
+        },
+      }}
         style={styles.input}
         label="Password"
+        textColor="#868889"
         placeholder="password"
         right={
           <TextInput.Icon
@@ -38,12 +97,12 @@ const Signin = ({ navigation }) => {
             backgroundColor="#26282c"
           />
         }
+        onChangeText={setPassword}
+        error={passwordError}
       />
+      {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
       <Text style={{ color: "#ae9a53", left: 130 }}>Forgot Password?</Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Dashboard")}
-        style={styles.get}
-      >
+      <Pressable onPress={handleSubmit} style={styles.get}>
         <Text
           style={{
             color: "#000",
@@ -59,7 +118,7 @@ const Signin = ({ navigation }) => {
         >
           Get Started
         </Text>
-      </TouchableOpacity>
+      </Pressable>
       <Text style={{ color: "#8d8e92", marginTop: 20 }}>
         Or simply login with
       </Text>
@@ -79,9 +138,9 @@ const Signin = ({ navigation }) => {
       </View>
       <View style={styles.link}>
         <Text style={{ color: "#fff" }}>Don't have an account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+        <Pressable onPress={() => navigation.navigate("Register")}>
           <Text style={{ color: "#eac866" }}>Sign Up</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );
@@ -96,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#26282c",
   },
   image: {
-    marginTop: 100
+    marginTop: 100,
   },
   textContainer: {
     alignItems: "center",
@@ -118,6 +177,9 @@ const styles = StyleSheet.create({
   get: {
     width: 380,
     marginTop: 30,
+  },
+  error: {
+    color: 'red'
   },
   buttonIcon: {
     flexDirection: "row",
@@ -141,17 +203,17 @@ const styles = StyleSheet.create({
   bg: {
     flexDirection: "row",
     justifyContent: "center",
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     paddingTop: 10,
     paddingBottom: 10,
     borderRadius: 8,
     width: "65%",
     marginTop: 30,
-    gap: 10
+    gap: 10,
   },
   link: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 160,
-    gap: 10
-  }
+    gap: 10,
+  },
 });
