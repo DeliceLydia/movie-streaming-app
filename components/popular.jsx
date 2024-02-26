@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, FlatList, StyleSheet } from "react-native";
 import Card from "./Card";
 
-const FetchMovies = () => {
+const PopularMovies = () => {
   const options = {
     method: "GET",
     headers: {
@@ -13,7 +13,7 @@ const FetchMovies = () => {
   };
 
   fetch(
-    'https://api.themoviedb.org/3/trending/movie/day?language=en-US',
+    'https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1',
     options
   )
     .then((response) => response.json())
@@ -37,7 +37,7 @@ const FetchMovies = () => {
           const item = post.item;
           return (
             <Card
-              title_movie={item.original_title}
+              title_movie={item.name}
               image={item.poster_path}
             />
           );
@@ -47,7 +47,7 @@ const FetchMovies = () => {
   );
 };
 
-export default FetchMovies;
+export default PopularMovies;
 
 const styles = StyleSheet.create({
 })

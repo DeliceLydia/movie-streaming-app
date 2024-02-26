@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity, ScrollView, StatusBar} from "react-native";
 import Types  from './types';
 import Trending from "./Trending";
 import New from "./New";
@@ -6,12 +6,16 @@ import Title from "./Title";
 import Title2 from "./Title2";
 import Title3 from "./Title3";
 import MadeForYou from "./Made";
+import Icons from "./Icons";
+import PopularMovies from "./popular";
 import Feather from "react-native-vector-icons/Feather";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 const Dashboard = ({navigation}) => {
   return (
     <View style={styles.container}>
+    <ScrollView>
+      <StatusBar style="auto"/>
       <View style={styles.nav}>
       <TouchableOpacity onPress={() => navigation.navigate("Home")}>
         <Image source={require("../assets/muvi.png")} style={styles.image} />
@@ -40,7 +44,9 @@ const Dashboard = ({navigation}) => {
       <Title2 />
       <MadeForYou />
       <Title3 />
-      <MadeForYou />
+      <PopularMovies />
+    </ScrollView>
+    <Icons />
     </View>
   );
 };
@@ -53,7 +59,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#1f2123",
   },
   nav: {
-    marginTop: 20,
     flexDirection: "row",
     marginLeft: 30,
     marginRight: 30,

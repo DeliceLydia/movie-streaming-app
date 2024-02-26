@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Dashboard">
         <Stack.Screen
           name="Home"
           component={Home}
@@ -67,6 +67,7 @@ const App = () => {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
+
     </NavigationContainer>
   );
 };

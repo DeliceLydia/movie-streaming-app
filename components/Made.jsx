@@ -1,39 +1,53 @@
-import {ScrollView, View } from "react-native";
-import Card from './Card';
+import React, { useState } from 'react'
+import { View, FlatList, StyleSheet } from "react-native";
+import Card from "./Card";
 
-const MadeForYou = () => {
-  const data = [
-    {
-      id: 1,
-      image:
-       'https://m.media-amazon.com/images/M/MV5BZjFmY2IwZmEtNTE4Mi00YzNmLTgzZTgtZjg1NzBhMGZjNGYzXkEyXkFqcGdeQXVyNzI1NzMxNzM@._V1_.jpg'
+const FetchMovies = () => {
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNDFhZWQ4YWFiYzg3YjY3MjFmMTBlMGZmYWU0ZGI0ZiIsInN1YiI6IjY1ZDg2YzI4OTM2OWEyMDE4NjYzNzk0YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wtza5o9-lAFYuvvEVssbX0gILMJgilfmyiXx6f8UVF0",
     },
-    {
-      id: 2,
-      image:"https://static1.cbrimages.com/wordpress/wp-content/uploads/2022/04/Steve-Rogers-Marches-Forward-In-Captain-America-The-Winter-Soldier.jpg",
-    },
-    {
-      id: 3,
-      image:
-        "https://m.media-amazon.com/images/M/MV5BZjFmY2IwZmEtNTE4Mi00YzNmLTgzZTgtZjg1NzBhMGZjNGYzXkEyXkFqcGdeQXVyNzI1NzMxNzM@._V1_.jpg",
-    },
-  ];
+  };
+
+  fetch(
+    'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1',
+    options
+  )
+    .then((response) => response.json())
+    .then((response) => setPosts(response.results))
+    .catch((err) => console.error(err));
+
+  const [posts, setPosts] = useState([]);
+
   return (
     <View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {data.map((item, index) => {
+      <FlatList
+        horizontal={true}
+        data={posts}
+        keyExtractor={(item) => {
+          return item.id;
+        }}
+        ItemSeparatorComponent={() => {
+          return <View style={styles.separator} />;
+        }}
+        renderItem={(post) => {
+          const item = post.item;
           return (
-            <View style={{ margin: 3 }}>
-              <Card
-                key={index}
-                image={item.image}
-              />
-            </View>
+            <Card
+              title_movie={item.title}
+              image={item.poster_path}
+            />
           );
-        })}
-      </ScrollView>
+        }}
+      />
     </View>
   );
-}
+};
 
-export default MadeForYou;
+export default FetchMovies;
+
+const styles = StyleSheet.create({
+})
