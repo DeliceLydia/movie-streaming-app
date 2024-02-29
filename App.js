@@ -14,13 +14,14 @@ import Dashboard from "./components/Dashboard";
 import Search from "./components/Search";
 import Profile from "./components/Profile";
 import MyList from "./components/MyList";
+import Action from "./components/Action";
 
 const Stack = createNativeStackNavigator();
 const Tab= createBottomTabNavigator()
 
 const MyTab = () => {
   return (
-      <Stack.Navigator initialRouteName="Dashboard">
+      <Stack.Navigator initialRouteName="Action">
         <Stack.Screen
           name="Home"
           component={Home}
@@ -39,6 +40,11 @@ const MyTab = () => {
         <Stack.Screen
           name="welcome"
           component={Welcome}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="Action"
+          component={Action}
           options={{ headerShown: false }}
         />
         <Stack.Screen
