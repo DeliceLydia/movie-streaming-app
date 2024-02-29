@@ -6,7 +6,6 @@ import Title from "./Title";
 import Title2 from "./Title2";
 import Title3 from "./Title3";
 import MadeForYou from "./Made";
-import Icons from "./Icons";
 import PopularMovies from "./popular";
 import Feather from "react-native-vector-icons/Feather";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -15,7 +14,6 @@ const Dashboard = ({navigation}) => {
   return (
     <View style={styles.container}>
     <ScrollView>
-      <StatusBar style="auto"/>
       <View style={styles.nav}>
       <TouchableOpacity onPress={() => navigation.navigate("Home")}>
         <Image source={require("../assets/muvi.png")} style={styles.image} />
@@ -46,7 +44,6 @@ const Dashboard = ({navigation}) => {
       <Title3 />
       <PopularMovies />
     </ScrollView>
-    <Icons />
     </View>
   );
 };
