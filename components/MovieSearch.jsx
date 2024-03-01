@@ -37,11 +37,17 @@ export default function MovieSearch() {
     <View style={styles.container}>
       <Text style={styles.title}>Search</Text>
       <TextInput
+      theme={{
+        colors: {
+          primary: "#FCD130",
+        },
+      }}
         style={styles.input}
         mode="flat"
         label="Type title, categories, years, etc."
         color="#595b5f"
         underlineColor="#2c2e31"
+        textColor="#868889"
         value={searchdata}
         onChangeText={(e) => setSearchdata(e)}
         right={

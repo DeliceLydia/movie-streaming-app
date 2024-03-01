@@ -7,7 +7,7 @@ const SearchCard = ({ title_movie, image, overview }) => {
       <Text style={styles.title}>{title_movie}</Text>
       </View>
       <Image source={{ uri: `https://image.tmdb.org/t/p/w500${image}`}} style={styles.cardImage} />
-      <Text style={styles.overview}>{overview}</Text>
+      <Text style={{color: '#696a6b', marginTop: 15, textAlign: 'center'}}>{overview}</Text>
     </View>
   );
 };
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#e0bc39',
     fontSize: 18,
+    textAlign: 'center',
     fontWeight: "bold",
     marginBottom: 10
   }
