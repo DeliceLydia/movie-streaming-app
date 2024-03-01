@@ -11,7 +11,7 @@ import Welcome from "./components/Welcome";
 import Signin from "./components/signin";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
-import Search from "./components/Search";
+import MovieSearch from "./components/MovieSearch";
 import Profile from "./components/Profile";
 import MyList from "./components/MyList";
 import Action from "./components/Action";
@@ -21,17 +21,17 @@ const Tab= createBottomTabNavigator()
 
 const MyTab = () => {
   return (
-      <Stack.Navigator initialRouteName="Action">
+      <Stack.Navigator initialRouteName="Dashboard">
         <Stack.Screen
           name="Home"
           component={Home}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+         {/* <Stack.Screen
           name="Search"
           component={Search}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="start"
           component={Start}
@@ -99,7 +99,7 @@ const BottomTabNavigator = ()=> {
   // tabBarActiveBackgroundColor:'#F2B916',
     }} >
       <Tab.Screen name='Home' component={Dashboard} options={{headerShown:false, tabBarIcon:()=><AntDesign name='home' type='font-awesome' color={'#F2B916'} size={30}/>}}/>
-      <Tab.Screen name='Search' component={Search} options={{headerShown:false, tabBarIcon:()=><EvilIcons name='search' type='font-awesome' color={'white'} size={30}/>}}/>
+      <Tab.Screen name='MovieSearch' component={MovieSearch} options={{headerShown:false, tabBarIcon:()=><EvilIcons name='search' type='font-awesome' color={'white'} size={30}/>}}/>
       <Tab.Screen name='List' component={MyList} options={{headerShown:false, tabBarIcon:()=><FontAwesome name='folder-o' type='material-community' color={'white'} size={30}/>}}/>
       <Tab.Screen name='Profile' component={Profile} options={{headerShown:false, tabBarIcon:()=><AntDesign name='appstore-o' type='material-community' color={'white'} size={30}/>}}/>
     </Tab.Navigator>
