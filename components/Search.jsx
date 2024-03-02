@@ -5,12 +5,11 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  TouchableHighlight,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import SearchCard from "./SearchCard";
 
-export default function MovieSearch() {
+const Search = ({navigation}) => {
   const [searcher, setSearcher] = useState([]);
   const [searchdata, setSearchdata] = useState("");
 
@@ -62,15 +61,16 @@ export default function MovieSearch() {
         data={searcher}
         renderItem={({ item }) => (
           <>
-            <TouchableHighlight
+            <View
               style={{ justifyContent: "center", alignItems: "center" }}
             >
               <SearchCard
                 image={item.poster_path}
                 title_movie={item.original_title}
                 overview={item.overview}
+                onPress={()=>{navigation.navigate('Action',item)}}
               />
-            </TouchableHighlight>
+            </View>
           </>
         )}
         keyExtractor={(item, index) => index.toString()}
@@ -78,6 +78,8 @@ export default function MovieSearch() {
     </View>
   );
 }
+
+export default Search;
 
 const styles = StyleSheet.create({
   container: {

@@ -1,58 +1,115 @@
+import React, { useEffect, useState } from "react";
+import YouTube from "react-native-youtube-iframe";
 import {
   View,
   StyleSheet,
   Text,
-  ImageBackground,
   Pressable,
   StatusBar,
+  Image,
+  ScrollView,
+  FlatList,
 } from "react-native";
 import AntiDesign from "react-native-vector-icons/AntDesign";
-import Feather from "react-native-vector-icons/Feather";
+import ActionCard from "./ActionCard";
 
-const Action = (navigation) => {
+const Action = ({ navigation, route }) => {
+  const paramsData = route.params;
+  const [movie, setMovie] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNDFhZWQ4YWFiYzg3YjY3MjFmMTBlMGZmYWU0ZGI0ZiIsInN1YiI6IjY1ZDg2YzI4OTM2OWEyMDE4NjYzNzk0YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wtza5o9-lAFYuvvEVssbX0gILMJgilfmyiXx6f8UVF0",
+    },
+  };
+  const FetchDetails = () => {
+    fetch(
+      "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        setMovie(response.results);
+      })
+      .catch((err) => console.error(err));
+  };
+  useEffect(() => {
+    FetchDetails();
+  }, []);
+
   return (
-    <ImageBackground
-      source={{
-        uri: "https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p16726368_p_v8_aa.jpg",
-      }}
-      style={styles.backgroundImage}
-    >
+    <View style={styles.backgroundImage}>
       <StatusBar
         color="#fff"
-        backgroundColor="#9f998c"
+        backgroundColor="#25272a"
         barStyle="light-content"
       />
-      <Pressable onPress={() => navigation.navigate("Dashboard")}>
-      <AntiDesign
-        name="arrowleft"
-        size={30}
-        color="#e9c33f"
-        style={{ marginLeft: 20}}
-      />
-      </Pressable>
-     
-      <View style={{ marginTop: 100, marginLeft: 20 }}>
+       <Image source={{ uri: `https://image.tmdb.org/t/p/w500${paramsData.poster_path}`}} style={styles.cardImage} />
+
+      <ScrollView style={{ marginTop: 20, marginLeft: 20 }}>
         <Text style={{ fontSize: 24, color: "#fff", fontWeight: "bold" }}>
-          The Silence
+          {paramsData.title}
         </Text>
-        <Text style={{color: '#7a7a7b'}}>1h29m</Text>
-        <View>
-          <Text style={{color: '#7a7a7b'}}>Adventure, Romantic, Thriller</Text>
-          <View style={{flexDirection: 'row', gap: 50}}>
-          <Pressable style={{flexDirection: 'row', backgroundColor: '#fed12f', width: '26%', marginTop: 20, paddingTop: 6, paddingBottom: 6, justifyContent: 'center'}}>
-            <Feather name="play" size={20} />
-            <Text>Play</Text>
-          </Pressable>
-          <Pressable style={{flexDirection: 'row', marginTop: 20, paddingTop: 6, paddingBottom: 6, justifyContent: 'center', borderWidth: 1, width: '26%'}}>
-            <AntiDesign name="plus" size={20} style={{ color: '#af922f' }} />
-            <Text style={{ color: '#888888' }}>My List</Text>
-          </Pressable>
+        <Text style={{ color: "#7a7a7b", marginBottom: -18 }}></Text>
+        <Text>
+        <Text style={{ color: "#7a7a7b" }}>{paramsData.release_date}</Text>
+        </Text>
+ 
+          <View style={{ flexDirection: "row", gap: 50 }}>
+            <Pressable
+              style={{
+                flexDirection: "row",
+                backgroundColor: "#fed12f",
+                width: "70%",
+                marginTop: 20,
+                paddingTop: 10,
+                paddingBottom: 10,
+                borderRadius: 8,
+                justifyContent: "center",
+              }}
+            >
+              <AntiDesign name="playcircleo" size={20} />
+              <Text style={{marginLeft: 5}}>Play Movie</Text>
+            </Pressable>
           </View>
-          <Text style={{color: '#606264', marginTop: 20, marginBottom: 20}}>When the world is under attack by a swarm of creatures called vesps, Ally, a teenager who is aurally impaired, and her family take refuge in a house in a remote place.</Text>
-          <Text style={{color: '#47494a'}}>Cast: Kieman shipker, Stanley Tucci, Miranda Otto</Text>
-        </View>
-      </View>
-    </ImageBackground>
+          <Text style={{ color: "#606264", marginTop: 20, marginBottom: 20 }}>
+            {paramsData.overview}
+          </Text>
+      </ScrollView>
+      {isPlaying && (
+        <YouTube
+          videoId={paramsData.video}
+          height={300}
+          play={isPlaying}
+          onChangeState={(event) => {
+            if (event === "ended") {
+              setIsPlaying(false);
+            }
+          }}
+        />
+      )}
+      <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={movie}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => (
+          <View
+            style={{
+              marginTop: 30,
+              marginRight: 10,
+              justifyContent: "space-between",
+            }}
+          >
+            <ActionCard image={item.poster_path}/>
+          </View>
+        )}
+      />
+    </View>
   );
 };
 
@@ -60,10 +117,12 @@ export default Action;
 
 const styles = StyleSheet.create({
   backgroundImage: {
-    flex: 1,
-    resizeMode: "contain",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    opacity: 0.7,
+    backgroundColor: "#25272a",
+    height: "100%"
   },
+  cardImage: {
+    width: '100%',
+    height: 400,
+    resizeMode: 'cover',
+  }
 });
