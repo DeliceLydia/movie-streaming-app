@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { View, FlatList, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, FlatList, StyleSheet, Pressable } from "react-native";
 import Card from "./Card";
 
-const PopularMovies = () => {
+const PopularMovies = ({ navigation }) => {
   const options = {
     method: "GET",
     headers: {
@@ -13,7 +13,7 @@ const PopularMovies = () => {
   };
 
   fetch(
-    'https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1',
+    "https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1",
     options
   )
     .then((response) => response.json())
@@ -35,12 +35,7 @@ const PopularMovies = () => {
         }}
         renderItem={(post) => {
           const item = post.item;
-          return (
-            <Card
-              title_movie={item.name}
-              image={item.poster_path}
-            />
-          );
+          return <Card title_movie={item.name} image={item.poster_path} />;
         }}
       />
     </View>
@@ -49,5 +44,4 @@ const PopularMovies = () => {
 
 export default PopularMovies;
 
-const styles = StyleSheet.create({
-})
+const styles = StyleSheet.create({});

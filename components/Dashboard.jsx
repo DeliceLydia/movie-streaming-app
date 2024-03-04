@@ -1,5 +1,12 @@
-import { View, Image, StyleSheet, TouchableOpacity, ScrollView, StatusBar} from "react-native";
-import Types  from './types';
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  StatusBar,
+} from "react-native";
+import Types from "./types";
 import Trending from "./Trending";
 import New from "./New";
 import Title from "./Title";
@@ -10,40 +17,43 @@ import PopularMovies from "./popular";
 import Feather from "react-native-vector-icons/Feather";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
-const Dashboard = ({navigation}) => {
+const Dashboard = ({ navigation }) => {
   return (
     <View style={styles.container}>
-    <ScrollView>
-      <View style={styles.nav}>
-      <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-        <Image source={require("../assets/muvi.png")} style={styles.image} />
-        </TouchableOpacity>
-        <View style={styles.icons}>
-          <Feather
-            style={styles.iconStyle}
-            name="bookmark"
-            type="font-awesome"
-            size={15}
-            color="#959798"
-          />
-          <AntDesign
-            style={styles.iconStyle}
-            name="bells"
-            type="font-awesome"
-            size={15}
-            color="#959798"
-          />
+      <ScrollView>
+        <View style={styles.nav}>
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <Image
+              source={require("../assets/muvi.png")}
+              style={styles.image}
+            />
+          </TouchableOpacity>
+          <View style={styles.icons}>
+            <Feather
+              style={styles.iconStyle}
+              name="bookmark"
+              type="font-awesome"
+              size={15}
+              color="#959798"
+            />
+            <AntDesign
+              style={styles.iconStyle}
+              name="bells"
+              type="font-awesome"
+              size={15}
+              color="#959798"
+            />
+          </View>
         </View>
-      </View>
-      <Types />
-      <Trending />
-      <Title />
-      <New />
-      <Title2 />
-      <MadeForYou />
-      <Title3 />
-      <PopularMovies />
-    </ScrollView>
+        <Types />
+        <Trending />
+        <Title />
+        <New />
+        <Title2 />
+        <MadeForYou />
+        <Title3 />
+        <PopularMovies />
+      </ScrollView>
     </View>
   );
 };
@@ -62,8 +72,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   icons: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 15,
-    marginTop: 29
-  }
+    marginTop: 29,
+  },
 });
