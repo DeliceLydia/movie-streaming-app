@@ -7,14 +7,13 @@ import {
   Pressable,
   StatusBar,
   ScrollView,
-  FlatList,
 } from "react-native";
+import MadeForYou from "./Made";
 import AntiDesign from "react-native-vector-icons/AntDesign";
 
-const Action = ({ navigation, route }) => {
-  const paramsData = route.params;
-  const [movie, setMovie] = useState([]);
-  const [isPlaying, setIsPlaying] = useState('');
+const Action = ({ route }) => {
+  const [isPlaying, setIsPlaying] = useState("");
+  const [paramsData, setParamsData] = useState(route.params);
 
   const options = {
     method: "GET",
@@ -24,24 +23,12 @@ const Action = ({ navigation, route }) => {
         "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNDFhZWQ4YWFiYzg3YjY3MjFmMTBlMGZmYWU0ZGI0ZiIsInN1YiI6IjY1ZDg2YzI4OTM2OWEyMDE4NjYzNzk0YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wtza5o9-lAFYuvvEVssbX0gILMJgilfmyiXx6f8UVF0",
     },
   };
-  const FetchDetails = () => {
-    fetch(
-      "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
-      options
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        console.log("Video API response:", response);
-        setMovie(response.results);
-      })
-      .catch((err) => console.error(err));
-  };
-  useEffect(() => {
-    FetchDetails();
-    HandlePlay();
-  }, []);
 
-  const HandlePlay = () => {
+  useEffect(() => {
+    handlePlay();
+  }, [route.params]);
+
+  const handlePlay = () => {
     fetch(
       `https://api.themoviedb.org/3/movie/${paramsData.id}/videos?language=en-US`,
       options
@@ -56,7 +43,6 @@ const Action = ({ navigation, route }) => {
       })
       .catch((err) => console.error(err));
   };
-  
 
   return (
     <View style={styles.backgroundImage}>
@@ -65,57 +51,39 @@ const Action = ({ navigation, route }) => {
         backgroundColor="#25272a"
         barStyle="light-content"
       />
-      <YouTubePlayer
-        height={400}
-        videoId={isPlaying}
-      />
+      <YouTubePlayer height={400} videoId={isPlaying} />
 
-      <ScrollView style={{ marginTop: 20, marginLeft: 20 }}>
-        <Text style={{ fontSize: 24, color: "#fff", fontWeight: "bold" }}>
-          {paramsData.title}
-        </Text>
-        <Text style={{ color: "#7a7a7b", marginBottom: -18 }}></Text>
-        <Text>
-          <Text style={{ color: "#7a7a7b" }}>{paramsData.release_date}</Text>
-        </Text>
+      <ScrollView style={{ marginTop: -40, marginLeft: 20 }}>
+          <Text style={{ fontSize: 24, color: "#fff", fontWeight: "bold" }}>
+            {paramsData.title}
+          </Text>
+          <Text style={{ color: "#7a7a7b", marginBottom: -18 }}></Text>
+          <Text>
+            <Text style={{ color: "#7a7a7b" }}>{paramsData.release_date}</Text>
+          </Text>
 
-        <View style={{ flexDirection: "row", gap: 50 }}>
-          <Pressable
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#fed12f",
-              width: "70%",
-              marginTop: 20,
-              paddingTop: 10,
-              paddingBottom: 10,
-              borderRadius: 8,
-              justifyContent: "center",
-            }}
-          >
-            <AntiDesign name="playcircleo" size={20} />
-            <Text style={{ marginLeft: 5 }}>Play Movie</Text>
-          </Pressable>
-        </View>
-        <Text style={{ color: "#606264", marginTop: 20, marginBottom: 20 }}>
-          {paramsData.overview}
-        </Text>
-      </ScrollView>
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={movie}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <View
-            style={{
-              marginTop: 30,
-              marginRight: 10,
-              justifyContent: "space-between",
-            }}
-          >
+          <View style={{ flexDirection: "row", gap: 50 }}>
+            <Pressable
+              style={{
+                flexDirection: "row",
+                backgroundColor: "#fed12f",
+                width: "70%",
+                marginTop: 20,
+                paddingTop: 10,
+                paddingBottom: 10,
+                borderRadius: 8,
+                justifyContent: "center",
+              }}
+            >
+              <AntiDesign name="playcircleo" size={20} />
+              <Text style={{ marginLeft: 5 }}>Play Movie</Text>
+            </Pressable>
           </View>
-        )}
-      />
+          <Text style={{ color: "#606264", marginTop: 20, marginBottom: 20 }}>
+            {paramsData.overview}
+          </Text>
+        </ScrollView>
+      <MadeForYou />
     </View>
   );
 };

@@ -1,13 +1,34 @@
-import React, { useState } from "react";
-import { View, Image, StyleSheet, Text, Pressable } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Image, Text, Pressable } from "react-native";
+import styles from "../styles/authentication";
 import { TextInput } from "react-native-paper";
 import { Icon } from "react-native-elements";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FIREBASE_AUTH } from "../FirebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import FlashMessage from "react-native-flash-message";
 
 const Signin = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  // useEffect(() => {
+  //   const checkAuthenticationStatus = async () => {
+  //     try {
+  //       const isAuthenticated = await AsyncStorage.getItem("isAuthenticated");
+
+  //       if (isAuthenticated === "true") {
+  //         navigation.replace("Dashboard");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking authentication status:", error);
+  //     }
+  //   };
+
+  //   checkAuthenticationStatus();
+  // }, [navigation]);
 
   const validateForm = () => {
     let valid = true;
@@ -37,16 +58,33 @@ const Signin = ({ navigation }) => {
     return valid;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
+      await signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
       navigation.navigate("Dashboard");
+      
+
+      // const data = {
+      //   email: email,
+      //   password: password,
+      // };
+
+      // await AsyncStorage.setItem("userData", JSON.stringify(data));
+      // console.log("Data saved successfully!");
+
+      // await AsyncStorage.setItem("isAuthenticated", "true");
+
+      // navigation.replace("Dashboard");
+
+      // const retrievedData = await AsyncStorage.getItem("userData");
+      // console.log("Retrieved Data:", JSON.parse(retrievedData));
     }
   };
 
   return (
     <View style={styles.container}>
       <Pressable onPress={() => navigation.navigate("Home")} style={styles.img}>
-      <Image
+        <Image
           source={require("../assets/lg.png")}
           style={styles.image}
           resizeMode="cover"
@@ -81,11 +119,11 @@ const Signin = ({ navigation }) => {
       />
       {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
       <TextInput
-       theme={{
-        colors: {
-          primary: "#FCD130",
-        },
-      }}
+        theme={{
+          colors: {
+            primary: "#FCD130",
+          },
+        }}
         style={styles.input}
         label="Password"
         textColor="#868889"
@@ -147,73 +185,3 @@ const Signin = ({ navigation }) => {
 };
 
 export default Signin;
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    height: "100%",
-    backgroundColor: "#26282c",
-  },
-  image: {
-    marginTop: 100,
-  },
-  textContainer: {
-    alignItems: "center",
-  },
-  text: {
-    color: "#868889",
-    fontSize: 16,
-  },
-  input: {
-    height: 50,
-    borderRadius: 20,
-    marginTop: 20,
-    width: "65%",
-    color: "white",
-    borderWidth: 0,
-    backgroundColor: "#26282c",
-    marginBottom: 12,
-  },
-  get: {
-    width: 380,
-    marginTop: 30,
-  },
-  error: {
-    color: 'red'
-  },
-  buttonIcon: {
-    flexDirection: "row",
-    justifyContent: "center",
-    backgroundColor: "#000",
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderRadius: 8,
-    width: "65%",
-    gap: 10,
-    marginTop: 30,
-  },
-  iconStyle: {
-    marginTop: 2,
-  },
-  google: {
-    width: 18,
-    height: 18,
-    marginTop: 3,
-  },
-  bg: {
-    flexDirection: "row",
-    justifyContent: "center",
-    backgroundColor: "#ffffff",
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderRadius: 8,
-    width: "65%",
-    marginTop: 30,
-    gap: 10,
-  },
-  link: {
-    flexDirection: "row",
-    marginTop: 160,
-    gap: 10,
-  },
-});

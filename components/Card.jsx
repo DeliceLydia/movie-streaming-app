@@ -18,13 +18,13 @@ export default Card;
 
 const styles = StyleSheet.create({
   card: {
-    width: 430,
+    width: 300,
     marginTop: 20,
     marginLeft: 15,
   },
   cardImage: {
     width: "100%",
-    height: 460,
+    height: 300,
     resizeMode: "cover",
   },
   title: {

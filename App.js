@@ -21,7 +21,7 @@ const Tab = createBottomTabNavigator();
 
 const MyTab = () => {
   return (
-    <Stack.Navigator initialRouteName="Dashboard">
+    <Stack.Navigator initialRouteName="Register">
       <Stack.Screen
         name="Home"
         component={Home}
@@ -40,7 +40,10 @@ const MyTab = () => {
       <Stack.Screen
         name="Action"
         component={Action}
-        options={{ headerShown: false }}
+        options={{
+          headerStyle: { backgroundColor: "#25272a"},
+          headerTitleStyle: { color: "white" }
+        }}
       />
       <Stack.Screen
         name="Signin"
@@ -96,7 +99,6 @@ const BottomTabNavigator = () => {
           paddingTop: 15,
           borderTopColor: "#26282C",
         },
-        // tabBarActiveBackgroundColor:'#F2B916',
       }}
     >
       <Tab.Screen

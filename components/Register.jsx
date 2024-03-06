@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { View, Image, StyleSheet, Text, Pressable } from "react-native";
+import styles from "../styles/authentication";
+import { View, Image, Text, Pressable } from "react-native";
 import { TextInput } from "react-native-paper";
 import { Icon } from "react-native-elements";
+import { FIREBASE_AUTH } from "../FirebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import FlashMessage from "react-native-flash-message";
+
 
 const Register = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -49,8 +54,10 @@ const Register = ({ navigation }) => {
     return valid;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     if (validateForm()) {
+      const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
+      console.log(response);
       navigation.navigate("Signin");
     }
   };
@@ -187,73 +194,3 @@ const Register = ({ navigation }) => {
 };
 
 export default Register;
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    height: "100%",
-    backgroundColor: "#26282c",
-  },
-  image: {
-    marginTop: 60,
-  },
-  textContainer: {
-    alignItems: "center",
-  },
-  text: {
-    color: "#868889",
-    fontSize: 16,
-  },
-  input: {
-    height: 50,
-    borderRadius: 20,
-    marginTop: 20,
-    width: "65%",
-    color: "white",
-    borderWidth: 0,
-    backgroundColor: "#26282c",
-    marginBottom: 12,
-  },
-  get: {
-    width: 380,
-    marginTop: 30,
-  },
-  buttonIcon: {
-    flexDirection: "row",
-    justifyContent: "center",
-    backgroundColor: "#000",
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderRadius: 8,
-    width: "65%",
-    gap: 10,
-    marginTop: 30,
-  },
-  iconStyle: {
-    marginTop: 2,
-  },
-  google: {
-    width: 18,
-    height: 18,
-    marginTop: 3,
-  },
-  bg: {
-    flexDirection: "row",
-    justifyContent: "center",
-    backgroundColor: "#ffffff",
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderRadius: 8,
-    width: "65%",
-    marginTop: 30,
-    gap: 10,
-  },
-  link: {
-    flexDirection: "row",
-    marginTop: 120,
-    gap: 10,
-  },
-  error: {
-    color: 'red'
-  }
-});
