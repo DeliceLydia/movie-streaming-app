@@ -1,6 +1,6 @@
 # Description
 
-This is a movie-streaming app where users can watch they are favorite movies without
+This is a movie-streaming app where users can watch they are favorite movie trailers without
 paying any coin
 
 ## Built With
