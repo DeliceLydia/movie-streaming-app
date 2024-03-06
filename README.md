@@ -1,9 +1,10 @@
 # Description
 
-This is a movie streaming app where users are able to watch they are favorite movie without
+This is a movie-streaming app where users can watch they are favorite movies without
 paying any coin
 
 ## Built With
-- Javasript
+- Javascript
+- Firebase
 - React-Native
 - Yarn
