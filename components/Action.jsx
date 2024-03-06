@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
-import YouTube from "react-native-youtube-iframe";
+import YouTubePlayer from "react-native-youtube-iframe";
 import {
   View,
   StyleSheet,
   Text,
   Pressable,
   StatusBar,
-  Image,
   ScrollView,
   FlatList,
 } from "react-native";
 import AntiDesign from "react-native-vector-icons/AntDesign";
-import ActionCard from "./ActionCard";
 
 const Action = ({ navigation, route }) => {
   const paramsData = route.params;
   const [movie, setMovie] = useState([]);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState('');
 
   const options = {
     method: "GET",
@@ -33,13 +31,32 @@ const Action = ({ navigation, route }) => {
     )
       .then((response) => response.json())
       .then((response) => {
+        console.log("Video API response:", response);
         setMovie(response.results);
       })
       .catch((err) => console.error(err));
   };
   useEffect(() => {
     FetchDetails();
+    HandlePlay();
   }, []);
+
+  const HandlePlay = () => {
+    fetch(
+      `https://api.themoviedb.org/3/movie/${paramsData.id}/videos?language=en-US`,
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.results && response.results.length > 0) {
+          setIsPlaying(response.results[0].key);
+        } else {
+          console.error("No video key found in the API response");
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+  
 
   return (
     <View style={styles.backgroundImage}>
@@ -48,7 +65,10 @@ const Action = ({ navigation, route }) => {
         backgroundColor="#25272a"
         barStyle="light-content"
       />
-       <Image source={{ uri: `https://image.tmdb.org/t/p/w500${paramsData.poster_path}`}} style={styles.cardImage} />
+      <YouTubePlayer
+        height={400}
+        videoId={isPlaying}
+      />
 
       <ScrollView style={{ marginTop: 20, marginLeft: 20 }}>
         <Text style={{ fontSize: 24, color: "#fff", fontWeight: "bold" }}>
@@ -56,42 +76,30 @@ const Action = ({ navigation, route }) => {
         </Text>
         <Text style={{ color: "#7a7a7b", marginBottom: -18 }}></Text>
         <Text>
-        <Text style={{ color: "#7a7a7b" }}>{paramsData.release_date}</Text>
+          <Text style={{ color: "#7a7a7b" }}>{paramsData.release_date}</Text>
         </Text>
- 
-          <View style={{ flexDirection: "row", gap: 50 }}>
-            <Pressable
-              style={{
-                flexDirection: "row",
-                backgroundColor: "#fed12f",
-                width: "70%",
-                marginTop: 20,
-                paddingTop: 10,
-                paddingBottom: 10,
-                borderRadius: 8,
-                justifyContent: "center",
-              }}
-            >
-              <AntiDesign name="playcircleo" size={20} />
-              <Text style={{marginLeft: 5}}>Play Movie</Text>
-            </Pressable>
-          </View>
-          <Text style={{ color: "#606264", marginTop: 20, marginBottom: 20 }}>
-            {paramsData.overview}
-          </Text>
+
+        <View style={{ flexDirection: "row", gap: 50 }}>
+          <Pressable
+            style={{
+              flexDirection: "row",
+              backgroundColor: "#fed12f",
+              width: "70%",
+              marginTop: 20,
+              paddingTop: 10,
+              paddingBottom: 10,
+              borderRadius: 8,
+              justifyContent: "center",
+            }}
+          >
+            <AntiDesign name="playcircleo" size={20} />
+            <Text style={{ marginLeft: 5 }}>Play Movie</Text>
+          </Pressable>
+        </View>
+        <Text style={{ color: "#606264", marginTop: 20, marginBottom: 20 }}>
+          {paramsData.overview}
+        </Text>
       </ScrollView>
-      {isPlaying && (
-        <YouTube
-          videoId={paramsData.video}
-          height={300}
-          play={isPlaying}
-          onChangeState={(event) => {
-            if (event === "ended") {
-              setIsPlaying(false);
-            }
-          }}
-        />
-      )}
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -105,7 +113,6 @@ const Action = ({ navigation, route }) => {
               justifyContent: "space-between",
             }}
           >
-            <ActionCard image={item.poster_path}/>
           </View>
         )}
       />
@@ -118,11 +125,11 @@ export default Action;
 const styles = StyleSheet.create({
   backgroundImage: {
     backgroundColor: "#25272a",
-    height: "100%"
+    height: "100%",
   },
   cardImage: {
-    width: '100%',
+    width: "100%",
     height: 400,
-    resizeMode: 'cover',
-  }
+    resizeMode: "cover",
+  },
 });

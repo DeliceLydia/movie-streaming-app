@@ -68,7 +68,7 @@ const Search = ({navigation}) => {
                 image={item.poster_path}
                 title_movie={item.original_title}
                 overview={item.overview}
-                onPress={()=>{navigation.navigate('Action',item)}}
+                onPress={()=>{navigation.navigate('Action', item)}}
               />
             </View>
           </>
