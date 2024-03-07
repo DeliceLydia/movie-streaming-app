@@ -5,16 +5,26 @@ import { TextInput } from "react-native-paper";
 import { Icon } from "react-native-elements";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import FlashMessage from "react-native-flash-message";
-
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 const Register = ({ navigation }) => {
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const validateForm = () => {
     let valid = true;
@@ -54,18 +64,38 @@ const Register = ({ navigation }) => {
     return valid;
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     if (validateForm()) {
-      const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
-      console.log(response);
-      navigation.navigate("Signin");
+      try {
+        const response = await createUserWithEmailAndPassword(
+          FIREBASE_AUTH,
+          email,
+          password
+        );
+        showMessage({
+           message: "User created successfully",
+           type: "success",
+           duration: 3600,
+        });
+        setTimeout(()=> {
+          navigation.navigate("Signin");
+        }, 3000)
+        
+      } catch (error) {
+        showMessage({
+          message: "Failed",
+          type: "danger",
+          duration: 1800,
+        });
+      }
     }
   };
 
   return (
     <View style={styles.container}>
+      <FlashMessage position="top" />
       <Pressable onPress={() => navigation.navigate("Home")} style={styles.img}>
-      <Image
+        <Image
           source={require("../assets/lg.png")}
           style={styles.image}
           resizeMode="cover"
@@ -106,17 +136,23 @@ const Register = ({ navigation }) => {
           },
         }}
         style={styles.input}
+        secureTextEntry={showPassword}
+        value={password}
         label="Password"
         placeholder="password"
         textColor="#868889"
         right={
           <TextInput.Icon
-            icon="lock-outline"
+            icon={showPassword ? 'eye-off-outline' : 'eye-outline'}
+            onPress={togglePasswordVisibility}
             color="#d4b547"
             backgroundColor="#26282c"
           />
         }
-        onChangeText={setPassword}
+        onChangeText={(text) => {
+          setPassword(text);
+          setPasswordError('');
+        }}
         error={passwordError}
       />
       {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
@@ -127,24 +163,32 @@ const Register = ({ navigation }) => {
           },
         }}
         style={styles.input}
+        secureTextEntry={showConfirmPassword}
+        value={confirmPassword}
         label="Confirm Password"
-        textColor="#868889"
         placeholder="Confirm Password"
+        textColor="#868889"
         right={
           <TextInput.Icon
-            icon="lock-outline"
+            icon={showConfirmPassword ? 'eye-off-outline' : 'eye-outline'}
+            onPress={toggleConfirmPasswordVisibility}
             color="#d4b547"
             backgroundColor="#26282c"
           />
         }
-        onChangeText={setConfirmPassword}
-        error={confirmPasswordError}
+        onChangeText={(text) => {
+          setConfirmPassword(text);
+          setConfirmPasswordError('');
+        }}
+        error={passwordError}
       />
       {confirmPasswordError ? (
         <Text style={styles.error}>{confirmPasswordError}</Text>
       ) : null}
       <Text>
-        <Text style={{ color: "#fff", marginTop: 20 }}>By signing up I accept</Text>
+        <Text style={{ color: "#fff", marginTop: 20 }}>
+          By signing up I accept
+        </Text>
         <Text style={{ color: "#ae9a53" }}> terms of use </Text>
         <Text style={{ color: "#fff" }}> and </Text>
         <Text style={{ color: "#ae9a53" }}>privacy policy</Text>

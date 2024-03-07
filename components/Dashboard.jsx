@@ -6,8 +6,6 @@ import {
   ScrollView,
   StatusBar,
 } from "react-native";
-import Types from "./types";
-import Trending from "./Trending";
 import New from "./New";
 import Title from "./Title";
 import Title2 from "./Title2";
@@ -45,8 +43,6 @@ const Dashboard = ({ navigation }) => {
             />
           </View>
         </View>
-        <Types />
-        <Trending />
         <Title />
         <New />
         <Title2 />

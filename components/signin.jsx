@@ -6,9 +6,10 @@ import { Icon } from "react-native-elements";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import FlashMessage from "react-native-flash-message";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 const Signin = ({ navigation }) => {
+  <FlashMessage position="top" />;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -60,10 +61,28 @@ const Signin = ({ navigation }) => {
 
   const handleSubmit = async () => {
     if (validateForm()) {
-      await signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
-      navigation.navigate("Dashboard");
-      
-
+      try {
+        const response = await signInWithEmailAndPassword(
+          FIREBASE_AUTH,
+          email,
+          password
+        );
+        showMessage({
+          message: "successful",
+          type: "success",
+          duration: 1800,
+        });
+        setTimeout(()=> {
+          navigation.navigate("Dashboard");
+        }, 3000)
+      } catch (error) {
+        showMessage({
+          message: "Failed",
+          type: "danger",
+          duration: 1800,
+        });
+      }
+    }
       // const data = {
       //   email: email,
       //   password: password,
@@ -78,11 +97,11 @@ const Signin = ({ navigation }) => {
 
       // const retrievedData = await AsyncStorage.getItem("userData");
       // console.log("Retrieved Data:", JSON.parse(retrievedData));
-    }
-  };
+    };
 
   return (
     <View style={styles.container}>
+      <FlashMessage position="top" />
       <Pressable onPress={() => navigation.navigate("Home")} style={styles.img}>
         <Image
           source={require("../assets/lg.png")}

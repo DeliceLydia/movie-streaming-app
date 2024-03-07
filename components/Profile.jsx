@@ -9,8 +9,17 @@ import {
 import AntiDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { FIREBASE_AUTH } from "../FirebaseConfig";
 
-const Profile = () => {
+const Profile = ({navigation}) => {
+  const handleLogout = async () => {
+    try {
+      await FIREBASE_AUTH.signOut();
+      navigation.navigate("Dashboard");
+    } catch (error) {
+      console.error('Error during logout:', error.message);
+    }
+  };
   return (
     <View style={styles.container}>
       <StatusBar
@@ -91,7 +100,7 @@ const Profile = () => {
           <Feather name="help-circle" size={25} style={{ color: "#848686" }} />
           <Text style={{ color: "#848686", fontSize: 18 }}>Help, FAQ</Text>
         </View>
-        <Pressable>
+        <Pressable onPress={handleLogout}>
           <Text
             style={{
               textAlign: "center",
