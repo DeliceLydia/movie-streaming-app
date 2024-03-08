@@ -1,3 +1,4 @@
+import {useContext} from 'react';
 import {
   View,
   StyleSheet,
@@ -7,11 +8,16 @@ import {
   Pressable,
 } from "react-native";
 import AntiDesign from "react-native-vector-icons/AntDesign";
+import Entypo from "react-native-vector-icons/Entypo";
 import Feather from "react-native-vector-icons/Feather";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { ChangeIntoDarkMode } from "../context/themeContext";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 
+
 const Profile = ({navigation}) => {
+  const {dark,changeIntoDark} = useContext(ChangeIntoDarkMode);
+
   const handleLogout = async () => {
     try {
       await FIREBASE_AUTH.signOut();
@@ -21,10 +27,9 @@ const Profile = ({navigation}) => {
     }
   };
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor:dark?'#202123':'white'}]}>
       <StatusBar
         color="#fff"
-        backgroundColor="#202123"
         barStyle="light-content"
       />
       <View style={styles.info}>
@@ -44,7 +49,7 @@ const Profile = ({navigation}) => {
         </Text>
         <Text style={{ color: "#897231" }}>Edit Profile</Text>
       </View>
-      <View style={{ backgroundColor: "#2b2d30", height: "100%" }}>
+      <View style={{backgroundColor:dark?'#2b2d30':'white', height: "100%" }}>
         <View
           style={{
             flexDirection: "row",
@@ -100,6 +105,24 @@ const Profile = ({navigation}) => {
           <Feather name="help-circle" size={25} style={{ color: "#848686" }} />
           <Text style={{ color: "#848686", fontSize: 18 }}>Help, FAQ</Text>
         </View>
+        <View
+        style={{
+          flexDirection: "row",
+          paddingLeft: 20,
+          paddingTop: 20,
+          marginBottom: 10,
+        }}
+        >
+          <Text style={{color: "#848686", marginTop: 12, fontSize: 16}}>Change Mode</Text>
+          <Entypo
+              name="switch"
+              type="font-awesome"
+              color= "#848686"
+              paddingLeft= {25}
+              size={40}
+              onPress={()=>{changeIntoDark()}}
+            />
+        </View>
         <Pressable onPress={handleLogout}>
           <Text
             style={{
@@ -127,8 +150,7 @@ export default Profile;
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    backgroundColor: "#202123",
+    height: "100%"
   },
   image: {
     width: 150,
@@ -139,7 +161,6 @@ const styles = StyleSheet.create({
   },
   info: {
     alignItems: "center",
-    backgroundColor: "#25272a",
     paddingTop: 30,
     paddingBottom: 30,
   },

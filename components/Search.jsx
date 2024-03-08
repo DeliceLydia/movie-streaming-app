@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
+import Entypo from "react-native-vector-icons/Entypo";
 import {
   View,
   FlatList,
@@ -8,10 +9,12 @@ import {
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import SearchCard from "./SearchCard";
+import { ChangeIntoDarkMode } from "../context/themeContext";
 
 const Search = ({navigation}) => {
   const [searcher, setSearcher] = useState([]);
   const [searchdata, setSearchdata] = useState("");
+  const {dark,changeIntoDark} = useContext(ChangeIntoDarkMode);
 
   React.useEffect(() => {
     if (searchdata.length > 0) {
@@ -33,8 +36,33 @@ const Search = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor:dark?'#202123':'white'}]}>
+      <View
+      style={{
+        flexDirection: "row",
+        justifyContent: 'space-between'
+      }}
+      >
       <Text style={styles.title}>Search</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          paddingLeft: 20,
+          paddingTop: 20,
+          marginBottom: 10,
+        }}
+        >
+          <Text style={{color: "#848686", marginTop: 12, fontSize: 16}}>Change Mode</Text>
+          <Entypo
+              name="switch"
+              type="font-awesome"
+              color= "#848686"
+              paddingLeft= {25}
+              size={40}
+              onPress={()=>{changeIntoDark()}}
+            />
+        </View>
+      </View>
       <TextInput
       theme={{
         colors: {
@@ -83,8 +111,7 @@ export default Search;
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    backgroundColor: "#1f2123",
+    height: "100%"
   },
   title: {
     color: "#f6f8f9",
@@ -96,11 +123,6 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "#2c2e31",
-  },
-  inputContainer: {
-    backgroundColor: "#26282c",
-    paddingTop: 10,
-    height: "100%",
   },
   image: {
     width: 180,

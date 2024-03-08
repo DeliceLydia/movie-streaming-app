@@ -8,14 +8,13 @@ import Signin from "./components/signin";
 import Register from "./components/Register";
 import Action from "./components/Action";
 import BottomTabNavigator from "./navigations/BottomNav";
-// import TopNav from "./navigations/TopNav";
-// import Featured from "./Types/Features";
+import { ThemeProviderIntoDarkMode } from "./context/themeContext";
 
 const Stack = createNativeStackNavigator();
 
 const MyTab = () => {
   return (
-    <Stack.Navigator initialRouteName="Register">
+    <Stack.Navigator initialRouteName="Dashboard">
       <Stack.Screen
         name="Home"
         component={Home}
@@ -35,8 +34,8 @@ const MyTab = () => {
         name="Action"
         component={Action}
         options={{
-          headerStyle: { backgroundColor: "#25272a"},
-          headerTitleStyle: { color: "white" }
+          headerStyle: { backgroundColor: "#25272a" },
+          headerTitleStyle: { color: "white" },
         }}
       />
       <Stack.Screen
@@ -76,21 +75,17 @@ const MyTab = () => {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
-        name="Search"
-        component={TopNav}
-        options={{ headerShown: false }}
-      /> */}
     </Stack.Navigator>
   );
 };
 
-
 const App = () => {
   return (
-    <NavigationContainer>
-      <MyTab />
-    </NavigationContainer>
+    <ThemeProviderIntoDarkMode>
+      <NavigationContainer>
+        <MyTab />
+      </NavigationContainer>
+    </ThemeProviderIntoDarkMode>
   );
 };
 
